@@ -1,14 +1,11 @@
 import {
-  Input,
-  useDisclosure,
-  Box,
+  Input, Box,
   Flex,
   Heading,
   IconButton,
   InputGroup,
   InputLeftElement
 } from "@chakra-ui/react";
-import { useState } from "react";
 import { HiPencilSquare, HiMagnifyingGlass } from "react-icons/hi2";
 import ChatsDisplay from "../chats-display/chats-display";
 import { IConversation } from "../../types/wiser.types";

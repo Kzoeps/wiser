@@ -17,6 +17,7 @@ export default function TextInput({ handleMessage: onSubmit, ...rest }: TextInpu
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Enter" && e.shiftKey === false) {
+        e.preventDefault();
         handleSubmit();
       }
     };
