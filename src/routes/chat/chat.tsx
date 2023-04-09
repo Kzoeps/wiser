@@ -10,6 +10,7 @@ import Message from "../../components/message/message";
 import Send from "../../assets/send.mp3";
 import Receive from "../../assets/rec.mp3";
 import { useLoaderData } from "react-router-dom";
+import { useIndexedDB } from "react-indexed-db";
 
 const filterMessages = (messages: IMessage[]) => {
   return messages.map(({ content, role }) => ({
@@ -33,17 +34,18 @@ export default function Chat() {
   const receiveRef = useRef<HTMLAudioElement | null>(null);
   const [isTyping, setIsTyping] = React.useState<boolean>(false);
   const [messages, setMessages] = React.useState<IMessage[]>([]);
+  const { update } = useIndexedDB("conversations");
   const { conversation } = useLoaderData() as any;
 
-  const setUpMessages = useCallback((data: any) => {
+  const setUpMessages = useCallback((data: any, messages: IMessage[]) => {
     const systemMessage = data?.choices?.[0]?.message;
+    let newMessages= [...messages]
     if (systemMessage) {
-      setMessages((messages) => [
-        ...messages,
-        { ...systemMessage, id: uuidv4() },
-      ]);
+      newMessages = [...newMessages, { ...systemMessage, id: uuidv4() }];
+      setMessages(newMessages);
       receiveRef?.current?.play();
     }
+    return newMessages;
   }, []);
 
   const scrollToBottom = () => {
@@ -52,7 +54,7 @@ export default function Chat() {
 
   const handleMessage = async (message: string) => {
     try {
-      const newMessages = [
+      let newMessages = [
         ...messages,
         { content: message, role: "user", id: uuidv4() },
       ] as IMessage[];
@@ -60,7 +62,8 @@ export default function Chat() {
       sendRef?.current?.play();
       setTimeout(() => setIsTyping(true), 500);
       const data = await talkToGPT(newMessages);
-      setUpMessages(data);
+      newMessages = setUpMessages(data, newMessages);
+      await update({...conversation, messages: newMessages})
     } catch (e) {
       console.error(e);
     } finally {
@@ -70,36 +73,33 @@ export default function Chat() {
 
   useEffect(() => {
     setMessages(conversation?.messages || []);
-    const controller = new AbortController();
-    const setUpChatGPT = async () => {
-      try {
-        setIsTyping(true);
-        const data = await talkToGPT(
-          conversation?.messages || [],
-          controller.signal
-        );
-        setUpMessages(data);
-      } catch (e) {
-      } finally {
-        setIsTyping(false);
-      }
-    };
-    setUpChatGPT();
-    return () => {
-      setIsTyping(false);
-      controller.abort();
-    };
-  }, [conversation.id, setUpMessages]);
+  }, [conversation.id, conversation.messages])
+  // useEffect(() => {
+  //   setMessages(conversation?.messages || []);
+  //   const controller = new AbortController();
+  //   const setUpChatGPT = async () => {
+  //     try {
+  //       setIsTyping(true);
+  //       const data = await talkToGPT(
+  //         conversation?.messages || [],
+  //         controller.signal
+  //       );
+  //       setUpMessages(data, messages);
+  //     } catch (e) {
+  //     } finally {
+  //       setIsTyping(false);
+  //     }
+  //   };
+  //   setUpChatGPT();
+  //   return () => {
+  //     setIsTyping(false);
+  //     controller.abort();
+  //   };
+  // }, [conversation.id, setUpMessages]);
 
   useEffect(() => {
     scrollToBottom();
   }, [messages, isTyping]);
-
-  useEffect(() => {
-    return () => {
-
-    }
-  }, [])
 
   return (
     <Box
