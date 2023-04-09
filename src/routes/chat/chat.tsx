@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { Box } from "@chakra-ui/react";
+import { Avatar, Box, Flex } from "@chakra-ui/react";
 import TextInput from "../../components/text-input/text-input";
 import { IMessage } from "./types/chat.types";
 import { v4 as uuidv4 } from "uuid";
@@ -96,18 +96,25 @@ export default function Chat() {
         height={"100vh"}
         mb={3}
       >
-        <MessageDisplay messages={messages} />
-        {isTyping && (
-          <Message
-            bg={MessageConfig.system.bg}
-            borderBottomLeftRadius={MessageConfig.system.borderBottomLeftRadius}
-            borderBottomRightRadius={
-              MessageConfig.system.borderBottomRightRadius
-            }
-          >
-            <TypingDot />
-          </Message>
-        )}
+        <Box display={"flex"} alignItems={"flex-end"} gap={"10px"}>
+          <Avatar name="wiser"  size={'xs'} mb={2}/>
+          <Flex direction="column">
+            <MessageDisplay messages={messages} />
+            {isTyping && (
+              <Message
+                bg={MessageConfig.system.bg}
+                borderBottomLeftRadius={
+                  MessageConfig.system.borderBottomLeftRadius
+                }
+                borderBottomRightRadius={
+                  MessageConfig.system.borderBottomRightRadius
+                }
+              >
+                <TypingDot />
+              </Message>
+            )}
+          </Flex>
+        </Box>
       </Box>
       <TextInput
         pb={4}
