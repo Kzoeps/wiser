@@ -7,9 +7,13 @@ import MessageDisplay from "./components/message-display/message-display";
 import { INIT_MESSAGE, MessageConfig } from "./constants/chat.constants";
 import TypingDot from "./components/typing-dot/typing-dot";
 import Message from "../../components/message/message";
+import Send from '../../assets/send.mp3';
+import Receive from '../../assets/rec.mp3';
 
 export default function Chat() {
   const messageArea = useRef<HTMLDivElement | null>(null);
+  const sendRef = useRef<HTMLAudioElement | null>(null);
+  const receiveRef = useRef<HTMLAudioElement | null>(null);
   const [isTyping, setIsTyping] = React.useState<boolean>(false);
   const [messages, setMessages] = React.useState<IMessage[]>([]);
   useEffect(() => {
@@ -25,6 +29,7 @@ export default function Chat() {
           ...messages,
           { ...systemMessage, id: uuidv4() },
         ]);
+        receiveRef?.current?.play();
       } catch (e) {
         console.error(e);
       } finally {
@@ -59,6 +64,7 @@ export default function Chat() {
         { content: message, role: "user", id: uuidv4() },
       ] as IMessage[];
       setMessages(newMessages);
+      sendRef?.current?.play();
       setTimeout(() => setIsTyping(true), 500);
       const response = await fetch(`/api/talk`, {
         method: "POST",
@@ -73,6 +79,7 @@ export default function Chat() {
           ...messages,
           { ...systemMessage, id: uuidv4() },
         ]);
+        receiveRef?.current?.play();
       }
     } catch (e) {
       console.error(e);
@@ -122,6 +129,8 @@ export default function Chat() {
         w={"100%"}
         handleMessage={async (msg: string) => await handleMessage(msg)}
       />
+      <audio ref={sendRef} src={Send} style={{display: 'none'}} controls/>
+      <audio ref={receiveRef} src={Receive} style={{display: 'none'}} controls/>
     </Box>
   );
 }
