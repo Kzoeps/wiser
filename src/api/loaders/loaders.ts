@@ -1,12 +1,18 @@
 import { useIndexedDB } from "react-indexed-db";
 import { initDB } from "react-indexed-db";
 import { DBConfig } from "../../constants/wiser.constants";
+import { redirect } from "react-router-dom";
 
 initDB(DBConfig);
 
 export async function getConversations() {
-    const { getAll } = useIndexedDB('conversations')
+    const { add, getAll } = useIndexedDB('conversations')
     const conversations = await getAll()
+    if (conversations.length === 0) {
+        const convo = await add({ title: 'init :) ', messages: [] })
+        console.log(convo)
+        return redirect(`/chats/${convo}`)
+    }
     return  { conversations };
 }
 
