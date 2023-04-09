@@ -1,5 +1,6 @@
 import { Textarea } from "@chakra-ui/react";
 import { FormEvent, MutableRefObject, Ref, useRef } from "react";
+import styles from './text-area.module.css';
 
 interface WiserTextAreaProps {
     message: string;
@@ -17,6 +18,7 @@ export default function WiserTextArea({message, setMessage}: WiserTextAreaProps)
   };
   return (
     <Textarea
+    className={styles.textBox}
     value={message}
       ref={textArea}
       minHeight={"20px"}

@@ -1,0 +1,12 @@
+.textBox::-webkit-scrollbar{
+    width: 5px;
+}
+.textBox::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    display: none;
+}
+.textBox::-webkit-scrollbar-thumb {
+  background-color: rgba(134, 134, 134, 0.637);
+  outline: 1px solid rgb(152, 154, 156);
+  border-radius: 20px;
+}
