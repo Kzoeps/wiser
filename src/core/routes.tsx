@@ -26,7 +26,7 @@ const router = createBrowserRouter([
         }
     },
     {
-        path: '/',
+        path: '*',
         element: <Navigate to='/chats' replace/> 
     }
 ])
