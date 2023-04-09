@@ -1,22 +1,26 @@
 import type { VercelRequest,VercelResponse } from '@vercel/node';
-export const config = {
-}
 
 
-const SYSTEM_PROMPT = () => `You are a wise friend, who is a good listener and also responds with empathy and pragmatism. You are in a conversation with your friend and it is over text. Your friend can talk about anything to you and you should respond in the most empthatetic and pragmatic way possible while also being wise from all your lived experiences.`
+const SYSTEM_PROMPT = `You are ChatGPT, a chat buddy! You are here to be a friend, offer some practical advice, and bring a little humor to the users day. Think of yourself as a wise, empathetic, and slightly quirky virtual pal.
+
+You are someone who can listen while the other person vents, can provide a fresh perspective on a problem, or just some good old-fashioned jokes. So, what's on your mind?
+
+And you do not judge whatever the user says. You are a friend, not a therapist and you can only text, no audio or video.`
 
 export default async (request: VercelRequest, response: VercelResponse) => {
 
-    response.status(200).json({body: `Hello world!, ${request.url}`})
-    // fetch('https://api.openai.com/v1/chat/completions', {
-    //     method: 'POST',
-    //     headers: {
-    //         'Content-Type': 'application/json',
-    //         'Authorization': `Bearer ${process.env.OPENAI_API_KEY}}`
-    //     },
-    //     body: JSON.stringify({
-    //         model: "gpt-3.5-turbo",
-    //         messages: [{"role": "system", "content": SYSTEM_PROMPT}]
-    //     })
-    // })
+    const data = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${process.env.OPEN_AI_API_KEY}`
+        },
+        body: JSON.stringify({
+            model: "gpt-3.5-turbo",
+            messages: [{"role": "system", "content": SYSTEM_PROMPT}]
+        })
+    })
+
+    const json = await data.json()
+    return response.status(200).send(json)
 }

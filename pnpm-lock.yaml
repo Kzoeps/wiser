@@ -6,6 +6,7 @@ specifiers:
   '@emotion/styled': ^11.10.6
   '@types/react': ^18.0.28
   '@types/react-dom': ^18.0.11
+  '@types/uuid': ^9.0.1
   '@vercel/node': ^2.10.3
   '@vitejs/plugin-react-swc': ^3.0.0
   framer-motion: ^10.11.2
@@ -14,6 +15,7 @@ specifiers:
   react-icons: ^4.8.0
   react-router-dom: ^6.10.0
   typescript: ^4.9.3
+  uuid: ^9.0.0
   vercel: ^28.18.4
   vite: ^4.2.0
 
@@ -27,11 +29,13 @@ dependencies:
   react-dom: 18.2.0_react@18.2.0
   react-icons: 4.8.0_react@18.2.0
   react-router-dom: 6.10.0_biqbaboplfbrettd7655fr4n2y
+  uuid: 9.0.0
   vercel: 28.18.4
 
 devDependencies:
   '@types/react': 18.0.33
   '@types/react-dom': 18.0.11
+  '@types/uuid': 9.0.1
   '@vitejs/plugin-react-swc': 3.2.0_vite@4.2.1
   typescript: 4.9.5
   vite: 4.2.1
@@ -3475,6 +3479,10 @@ packages:
   /@types/unist/2.0.6:
     resolution: {integrity: sha512-PBjIUxZHOuj0R15/xuwJYjFi+KZdNFrehocChv4g5hu6aFroHue8m0lBP0POdK2nKzbw0cgV1mws8+V/JAcEkQ==}
     dev: false
+
+  /@types/uuid/9.0.1:
+    resolution: {integrity: sha512-rFT3ak0/2trgvp4yYZo5iKFEPsET7vKydKF+VRCxlQ9bpheehyAJH89dAkaLEq/j/RZXJIqcgsmPJKUP1Z28HA==}
+    dev: true
 
   /@vanilla-extract/babel-plugin-debug-ids/1.0.2:
     resolution: {integrity: sha512-LjnbQWGeMwaydmovx8jWUR8BxLtLiPyq0xz5C8G5OvFhsuJxvavLdrBHNNizvr1dq7/3qZGlPv0znsvU4P44YA==}
@@ -8125,6 +8133,11 @@ packages:
   /utils-merge/1.0.1:
     resolution: {integrity: sha512-pMZTvIkT1d+TFGvDOqodOclx0QWkkgi6Tdoa8gC8ffGAAqz9pzPTZWAybbsHHoED/ztMtkv/VoYTYyShUn81hA==}
     engines: {node: '>= 0.4.0'}
+    dev: false
+
+  /uuid/9.0.0:
+    resolution: {integrity: sha512-MXcSTerfPa4uqyzStbRoTgt5XIe3x5+42+q1sDuy3R5MDk66URdLMOZe5aPX/SQd+kuYAh0FdP/pO28IkQyTeg==}
+    hasBin: true
     dev: false
 
   /uvu/0.5.6:

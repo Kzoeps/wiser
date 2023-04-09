@@ -1,5 +1,5 @@
 export interface IMessage {
     id?: string;
-    role: 'user' | 'system';
+    role: 'user' | 'assistant';
     content: string;
 }
