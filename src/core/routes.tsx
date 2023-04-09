@@ -1,4 +1,4 @@
-import { createBrowserRouter, redirect, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, Navigate, redirect, RouterProvider } from 'react-router-dom'
 import Home from '../routes/root'
 import Chat from '../routes/chat/chat'
 import Chats from '../routes/chats'
@@ -7,7 +7,7 @@ import { addConversation, getChatById, getConversations } from '../api/loaders/l
 const router = createBrowserRouter([
     {
         path: '/',
-        element: <Home/> 
+        element: <Navigate to='/chats' replace/> 
     },
     {
         path: '/chats',
