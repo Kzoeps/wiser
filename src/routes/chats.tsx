@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import WiserDrawer from "../components/drawer/drawer";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLoaderData } from "react-router-dom";
 import { useIndexedDB } from "react-indexed-db";
 import { Box, FormControl, FormLabel, Input, useDisclosure } from "@chakra-ui/react";
 import { search } from "fast-fuzzy";
@@ -13,14 +13,16 @@ export default function Chats() {
   const titleRef = useRef<HTMLInputElement>(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { add, getAll, getByIndex } = useIndexedDB("conversations");
-
+  // @ts-ignore
+  const { conversations: convos } = useLoaderData();
   useEffect(() => {
-    getAll().then((e: any) => {
-      let convos = e.length ? e.reverse() : [];
-      setConversations(convos)
-      setAllConvos(convos)
-    });
-  }, []);
+    if (convos.length) {
+      const reversed = [...convos].reverse()
+      setConversations(reversed)
+    } else {
+      setConversations([])
+    }
+  }, [convos])
 
   const handleSearch = (query: string) => {
     setConversations(search(query, allConvos, {keySelector: (obj: IConversation) => obj.title})) 
@@ -31,7 +33,7 @@ export default function Chats() {
 
   const handleConfirm = async () => {
     if (titleRef.current) {
-      await add({title: titleRef.current.value, messages: []})
+      const convo = await add({title: titleRef.current.value, messages: []})
       let convos = await getAll()
       convos = convos.length ? convos.reverse() : [];
       setConversations(convos)
