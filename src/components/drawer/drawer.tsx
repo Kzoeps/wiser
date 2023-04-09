@@ -21,6 +21,13 @@ export interface WiserDrawerProps {
 
 export default function WiserDrawer({ conversations, onSearch, onCompose }: WiserDrawerProps) {
 
+  const spliceMessage = (message: string | undefined) => {
+    if (!message) return '';
+    if (message.length > 30) {
+      return `${message.slice(0, 30)}...`;
+    }
+    return message
+  }
   return (
     <>
       <Box
@@ -64,7 +71,7 @@ export default function WiserDrawer({ conversations, onSearch, onCompose }: Wise
         </Box>
         <Box>
           {conversations.map((conversation) => (
-            <ChatsDisplay key={conversation.id} title={conversation.title} message={conversation.messages.at(-1)?.content}/>
+            <ChatsDisplay key={conversation.id} title={conversation.title} message={spliceMessage(conversation.messages.at(-1)?.content)}/>
           ))}
         </Box>
       </Box>
