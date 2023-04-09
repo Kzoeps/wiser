@@ -109,6 +109,7 @@ export default function Chat() {
         <Box display={"flex"} w="100%" alignItems={"flex-end"} gap={"10px"}>
           <Avatar
             name={COUNTRIES[conversation.country].character}
+            src={COUNTRIES[conversation.country].img}
             size={"xs"}
             mb={2}
           />

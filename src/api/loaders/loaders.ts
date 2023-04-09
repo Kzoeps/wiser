@@ -9,7 +9,7 @@ export async function getConversations() {
     const { add, getAll } = useIndexedDB('conversations')
     const conversations = await getAll()
     if (conversations.length === 0) {
-        const convo = await add({ title: 'init :) ', messages: [], country: 'Bhutan' })
+        const convo = await add({ title: 'init :)', messages: [], country: 'Bhutan' })
         return redirect(`/chats/${convo}`)
     }
     return  { conversations };
