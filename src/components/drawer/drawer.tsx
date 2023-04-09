@@ -37,12 +37,13 @@ export default function WiserDrawer({
       <Box
         borderRight={"1px solid"}
         borderRightColor={"gray.100"}
-        maxW={"300px"}
+        w={"400px"}
+        maxW={"400px"}
         overflowY={"auto"}
         height={"100vh"}
       >
         <Box mb={1} borderBottom={"1px solid"} borderBottomColor={"gray.100"}>
-          <Flex direction={"row"} justifyContent={"space-between"}>
+          <Flex direction={"row"} alignItems={"center"} justifyContent={"space-between"}>
             <Box maxW={"150px"}>
               <Heading m={2}>Chats</Heading>
             </Box>
@@ -51,14 +52,14 @@ export default function WiserDrawer({
                 onClick={onCompose || (() => {})}
                 m={2}
                 variant={"outline"}
-                size={"sm"}
+                size={"md"}
                 borderRadius={"50%"}
                 aria-label="compose"
                 icon={<HiPencilSquare />}
               />
             </Box>
           </Flex>
-          <Box maxW={"300px"} p={2}>
+          <Box maxW={"400px"} p={2}>
             <InputGroup>
               <InputLeftElement
                 pointerEvents="none"
