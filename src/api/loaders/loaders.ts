@@ -15,3 +15,15 @@ export async function addConversation(title: string) {
     const conversation = await add({ title, message: [] })
     return  { conversation };
 }
+
+async function getChat(id: string) {
+    const { getByID } = useIndexedDB('conversations')
+    const conversation = await getByID(id)
+    console.log(conversation)
+    return { conversation }
+}
+
+export async function getChatById({params}: any) {
+    const conversation = await getChat(params.chat_id)
+    return conversation
+}

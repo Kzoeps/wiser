@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import { Avatar, Box, Flex } from "@chakra-ui/react";
 import TextInput from "../../components/text-input/text-input";
 import { IMessage } from "./types/chat.types";
@@ -9,38 +9,65 @@ import TypingDot from "./components/typing-dot/typing-dot";
 import Message from "../../components/message/message";
 import Send from "../../assets/send.mp3";
 import Receive from "../../assets/rec.mp3";
+import { useLoaderData } from "react-router-dom";
 
+const filterMessages = (messages: IMessage[]) => {
+  return messages.map(({ content, role }) => ({
+    content,
+    role,
+  }));
+};
+const talkToGPT = async (messages: IMessage[], signal?: AbortSignal) => {
+  const response = await fetch(`/api/talk`, {
+    method: "POST",
+    body: JSON.stringify(
+      filterMessages([INIT_MESSAGE as IMessage, ...messages])
+    ),
+    signal,
+  });
+  return await response.json();
+};
 export default function Chat() {
   const messageArea = useRef<HTMLDivElement | null>(null);
   const sendRef = useRef<HTMLAudioElement | null>(null);
   const receiveRef = useRef<HTMLAudioElement | null>(null);
   const [isTyping, setIsTyping] = React.useState<boolean>(false);
   const [messages, setMessages] = React.useState<IMessage[]>([]);
+  const { conversation } = useLoaderData() as any;
+
+  const setUpMessages = useCallback((data: any) => {
+    const systemMessage = data?.choices?.[0]?.message;
+    if (systemMessage) {
+      setMessages((messages) => [
+        ...messages,
+        { ...systemMessage, id: uuidv4() },
+      ]);
+      receiveRef?.current?.play();
+    }
+  }, []);
+
   useEffect(() => {
+    setMessages(conversation?.messages || []);
     const controller = new AbortController();
     const setUpChatGPT = async () => {
       try {
         setIsTyping(true);
-        const response = await (
-          await fetch("/api/set_up", { signal: controller.signal })
-        ).json();
-        const systemMessage = response?.choices?.[0]?.message;
-        setMessages((messages) => [
-          ...messages,
-          { ...systemMessage, id: uuidv4() },
-        ]);
-        receiveRef?.current?.play();
+        const data = await talkToGPT(
+          conversation?.messages || [],
+          controller.signal
+        );
+        setUpMessages(data);
       } catch (e) {
-        console.error(e);
       } finally {
         setIsTyping(false);
       }
     };
     setUpChatGPT();
     return () => {
+      setIsTyping(false);
       controller.abort();
     };
-  }, []);
+  }, [conversation.id, setUpMessages]);
 
   useEffect(() => {
     scrollToBottom();
@@ -48,13 +75,6 @@ export default function Chat() {
 
   const scrollToBottom = () => {
     messageArea.current?.scrollTo(0, messageArea.current?.scrollHeight);
-  };
-
-  const filterMessages = (messages: IMessage[]) => {
-    return messages.map(({ content, role }) => ({
-      content,
-      role,
-    }));
   };
 
   const handleMessage = async (message: string) => {
@@ -66,21 +86,8 @@ export default function Chat() {
       setMessages(newMessages);
       sendRef?.current?.play();
       setTimeout(() => setIsTyping(true), 500);
-      const response = await fetch(`/api/talk`, {
-        method: "POST",
-        body: JSON.stringify(
-          filterMessages([INIT_MESSAGE as IMessage, ...newMessages])
-        ),
-      });
-      const data = await response.json();
-      const systemMessage = data?.choices?.[0]?.message;
-      if (systemMessage) {
-        setMessages((messages) => [
-          ...messages,
-          { ...systemMessage, id: uuidv4() },
-        ]);
-        receiveRef?.current?.play();
-      }
+      const data = await talkToGPT(newMessages);
+      setUpMessages(data);
     } catch (e) {
       console.error(e);
     } finally {

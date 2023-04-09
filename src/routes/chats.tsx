@@ -62,7 +62,7 @@ export default function Chats() {
           onCompose={onOpen}
           conversations={conversations || []}
         />
-        {/* <Outlet /> */}
+        <Outlet />
         <GenericDialog
           isOpen={isOpen}
           title="Compose"
