@@ -3,7 +3,7 @@ import styles from './chats-display.module.css'
 
 export interface ChatsDisplayProps {
     title: string;
-    message: string;
+    message: string | undefined;
     isActive?: boolean;
 }
 
@@ -18,7 +18,7 @@ export default function ChatsDisplay({title, message, isActive}: ChatsDisplayPro
                 {title}
             </Text>
             <Text fontSize={'xs'}>
-                {message}
+                {message || ''}
             </Text>
         </Box>
     </Box>
