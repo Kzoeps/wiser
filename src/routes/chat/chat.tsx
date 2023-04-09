@@ -46,6 +46,28 @@ export default function Chat() {
     }
   }, []);
 
+  const scrollToBottom = () => {
+    messageArea.current?.scrollTo(0, messageArea.current?.scrollHeight);
+  };
+
+  const handleMessage = async (message: string) => {
+    try {
+      const newMessages = [
+        ...messages,
+        { content: message, role: "user", id: uuidv4() },
+      ] as IMessage[];
+      setMessages(newMessages);
+      sendRef?.current?.play();
+      setTimeout(() => setIsTyping(true), 500);
+      const data = await talkToGPT(newMessages);
+      setUpMessages(data);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setIsTyping(false);
+    }
+  };
+
   useEffect(() => {
     setMessages(conversation?.messages || []);
     const controller = new AbortController();
@@ -73,27 +95,12 @@ export default function Chat() {
     scrollToBottom();
   }, [messages, isTyping]);
 
-  const scrollToBottom = () => {
-    messageArea.current?.scrollTo(0, messageArea.current?.scrollHeight);
-  };
+  useEffect(() => {
+    return () => {
 
-  const handleMessage = async (message: string) => {
-    try {
-      const newMessages = [
-        ...messages,
-        { content: message, role: "user", id: uuidv4() },
-      ] as IMessage[];
-      setMessages(newMessages);
-      sendRef?.current?.play();
-      setTimeout(() => setIsTyping(true), 500);
-      const data = await talkToGPT(newMessages);
-      setUpMessages(data);
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setIsTyping(false);
     }
-  };
+  }, [])
+
   return (
     <Box
       display={"flex"}
