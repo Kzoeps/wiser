@@ -19,7 +19,6 @@ export async function addConversation(title: string) {
 async function getChat(id: string) {
     const { getByID } = useIndexedDB('conversations')
     const conversation = await getByID(id)
-    console.log(conversation)
     return { conversation }
 }
 

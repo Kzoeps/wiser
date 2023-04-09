@@ -27,15 +27,18 @@ export default function Chats() {
     if (convos.length) {
       const reversed = [...convos].reverse();
       setConversations(reversed);
+      setAllConvos(reversed);
     } else {
       setConversations([]);
+      setAllConvos([]);
     }
   }, [convos]);
 
   const handleSearch = (query: string) => {
+    console.log(query)
     setConversations(
       search(query, allConvos, {
-        keySelector: (obj: IConversation) => obj.title,
+        keySelector: (obj: IConversation) => obj?.title,
       })
     );
     if (query === "") {
