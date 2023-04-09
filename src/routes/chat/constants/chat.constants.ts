@@ -19,23 +19,23 @@ export const MessageConfig = {
 
 // add 15 countries to the list
 export const COUNTRIES = {
-  "Bhutan": "Dorji",
-  "India": "Raj",
-  "China": "Li",
-  "Japan": "Takashi",
-  "Korea": "Jin",
-  "Thailand": "Somsak",
-  "Vietnam": "Minh",
-  "Laos": "Somsanith Panday",
-  "Cambodia": "Sok Pheng",
-  "Myanmar": "Aung",
-  "Malaysia": "Ahmad Hassan",
-  "Indonesia": "Budi",
-}
-
-const SYSTEM_PROMPT = `Your name is Dorji. You are from Bhutan and you're a smart, wise and funny person. You make jokes in the context of bhutan and in general you are a chill guy to talk/text to. You are currently in a textual conversation with someone, reply in a casual and informal way.`
-
-export const INIT_MESSAGE = {
-  role: "system",
-  content: SYSTEM_PROMPT,
+  Bhutan: {
+    character: "Dorji",
+    emoji: "🇧🇹",
+    label: "Bhutan",
+  },
+  Bangladesh: {
+    character: "Rahman",
+    emoji: "🇧🇩",
+    label: "Bangladesh",
+  },
+  Thailand: { character: "Somsak", emoji: "🇹🇭", label: "Thailand" },
+  Vietnam: { character: "Minh", emoji: "🇻🇳", label: "Vietnam" },
+  Laos: { character: "Somsanith Panday", emoji: "🇱🇦", label: "Laos" },
+  Cambodia: { character: "Sok Pheng", emoji: "🇰🇭", label: "Cambodia" },
+  Myanmar: { character: "Aung", emoji: "🇲🇲", label: "Myanmar" },
+  Malaysia: { character: "Ahmad Hassan", emoji: "🇲🇾", label: "Malaysia" },
+  Indonesia: { character: "Budi", emoji: "🇮🇩", label: "Indonesia" },
+  Ethiopia: { character: "Abebe", emoji: "🇪🇹", label: "Ethiopia" },
+  Tibet: { character: "Tenzin", emoji: "🏳️‍🌈", label: "Tibet" },
 };

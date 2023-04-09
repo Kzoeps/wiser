@@ -10,7 +10,6 @@ export async function getConversations() {
     const conversations = await getAll()
     if (conversations.length === 0) {
         const convo = await add({ title: 'init :) ', messages: [], country: 'Bhutan' })
-        console.log(convo)
         return redirect(`/chats/${convo}`)
     }
     return  { conversations };

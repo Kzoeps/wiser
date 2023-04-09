@@ -4,7 +4,7 @@ import TextInput from "../../components/text-input/text-input";
 import { IMessage } from "./types/chat.types";
 import { v4 as uuidv4 } from "uuid";
 import MessageDisplay from "./components/message-display/message-display";
-import { COUNTRIES, INIT_MESSAGE, MessageConfig } from "./constants/chat.constants";
+import { COUNTRIES, MessageConfig } from "./constants/chat.constants";
 import TypingDot from "./components/typing-dot/typing-dot";
 import Message from "../../components/message/message";
 import Send from "../../assets/send.mp3";
@@ -24,7 +24,7 @@ const talkToGPT = async (messages: IMessage[], country: keyof typeof COUNTRIES, 
   const response = await fetch(`/api/talk`, {
     method: "POST",
     body: JSON.stringify(
-      filterMessages([getSystemPrompt('Bhutan') as IMessage, ...messages])
+      filterMessages([getSystemPrompt(country) as IMessage, ...messages])
     ),
     signal,
   });
@@ -120,7 +120,7 @@ export default function Chat() {
         mb={3}
       >
         <Box display={"flex"} w="100%" alignItems={"flex-end"} gap={"10px"}>
-          <Avatar name={COUNTRIES[conversation.country]} size={"xs"} mb={2} />
+          <Avatar name={COUNTRIES[conversation.country].character} size={"xs"} mb={2} />
           <Flex direction="column" w={"100%"}>
             <MessageDisplay messages={messages} />
             {isTyping && (

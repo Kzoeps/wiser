@@ -13,7 +13,7 @@ export default function ChatsDisplay({title,country, message, isActive}: ChatsDi
   return (
     <Box className={`${styles.conversation}`} display={"flex"} p={2} gap={"20px"} bg={isActive ? 'gray.100' : 'white'} borderRadius={'lg'}>
         <Box>
-            <Avatar name={COUNTRIES[country]} size="md"/>
+            <Avatar name={COUNTRIES[country].character} size="md"/>
         </Box>
         <Box display={'flex'} flexDirection={'column'} >
             <Text fontSize={'lg'}>
