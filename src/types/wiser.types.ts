@@ -1,3 +1,5 @@
+import { COUNTRIES } from "../routes/chat/constants/chat.constants";
+
 export interface IMessage {
     id?: string;
     role: 'user' | 'assistant';
@@ -6,5 +8,6 @@ export interface IMessage {
 export interface IConversation {
     id?: string;
     title: string;
+    country: keyof typeof COUNTRIES;
     messages: IMessage[];
 }

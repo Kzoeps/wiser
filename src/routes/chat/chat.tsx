@@ -4,13 +4,15 @@ import TextInput from "../../components/text-input/text-input";
 import { IMessage } from "./types/chat.types";
 import { v4 as uuidv4 } from "uuid";
 import MessageDisplay from "./components/message-display/message-display";
-import { INIT_MESSAGE, MessageConfig } from "./constants/chat.constants";
+import { COUNTRIES, INIT_MESSAGE, MessageConfig } from "./constants/chat.constants";
 import TypingDot from "./components/typing-dot/typing-dot";
 import Message from "../../components/message/message";
 import Send from "../../assets/send.mp3";
 import Receive from "../../assets/rec.mp3";
 import { useLoaderData } from "react-router-dom";
 import { useIndexedDB } from "react-indexed-db";
+import { getSystemPrompt } from "../../utils/wiser.util";
+import { IConversation } from "../../types/wiser.types";
 
 const filterMessages = (messages: IMessage[]) => {
   return messages.map(({ content, role }) => ({
@@ -18,11 +20,11 @@ const filterMessages = (messages: IMessage[]) => {
     role,
   }));
 };
-const talkToGPT = async (messages: IMessage[], signal?: AbortSignal) => {
+const talkToGPT = async (messages: IMessage[], country: keyof typeof COUNTRIES, signal?: AbortSignal) => {
   const response = await fetch(`/api/talk`, {
     method: "POST",
     body: JSON.stringify(
-      filterMessages([INIT_MESSAGE as IMessage, ...messages])
+      filterMessages([getSystemPrompt('Bhutan') as IMessage, ...messages])
     ),
     signal,
   });
@@ -35,7 +37,7 @@ export default function Chat() {
   const [isTyping, setIsTyping] = React.useState<boolean>(false);
   const [messages, setMessages] = React.useState<IMessage[]>([]);
   const { update } = useIndexedDB("conversations");
-  const { conversation } = useLoaderData() as any;
+  const { conversation } = useLoaderData() as { conversation: IConversation } ;
 
   const setUpMessages = useCallback((data: any, messages: IMessage[]) => {
     const systemMessage = data?.choices?.[0]?.message;
@@ -61,7 +63,7 @@ export default function Chat() {
       setMessages(newMessages);
       sendRef?.current?.play();
       setTimeout(() => setIsTyping(true), 500);
-      const data = await talkToGPT(newMessages);
+      const data = await talkToGPT(newMessages, conversation.country);
       newMessages = setUpMessages(data, newMessages);
       await update({...conversation, messages: newMessages})
     } catch (e) {
@@ -118,7 +120,7 @@ export default function Chat() {
         mb={3}
       >
         <Box display={"flex"} w="100%" alignItems={"flex-end"} gap={"10px"}>
-          <Avatar name="wiser" size={"xs"} mb={2} />
+          <Avatar name={COUNTRIES[conversation.country]} size={"xs"} mb={2} />
           <Flex direction="column" w={"100%"}>
             <MessageDisplay messages={messages} />
             {isTyping && (

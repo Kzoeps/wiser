@@ -12,7 +12,6 @@ import {
 import { search } from "fast-fuzzy";
 import { IConversation } from "../types/wiser.types";
 import GenericDialog from "../components/modal/modal";
-import { Form } from "react-router-dom";
 
 export default function Chats() {
   const [conversations, setConversations] = useState<IConversation[]>([]);
@@ -48,7 +47,7 @@ export default function Chats() {
 
   const handleConfirm = async () => {
     if (titleRef.current) {
-      const convo = await add({ title: titleRef.current.value, messages: [] });
+      const convo = await add({ title: titleRef.current.value, messages: [], country: 'Bhutan' });
       let convos = await getAll();
       convos = convos.length ? convos.reverse() : [];
       setConversations(convos);

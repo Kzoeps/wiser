@@ -77,18 +77,21 @@ export default function WiserDrawer({
         <Box>
           {conversations.map((conversation) => (
             <NavLink
+              key={conversation.id}
               to={`${conversation.id}`}
-              className={({ isActive }) =>
-                isActive ? `${styles.active}` : ""
-              }
+              className={({ isActive }) => (isActive ? `${styles.active}` : "")}
             >
-              {({isActive}) => {
-                return <ChatsDisplay
-                isActive={isActive}
-                key={conversation.id}
-                title={conversation.title}
-                message={spliceMessage(conversation.messages.at(-1)?.content)}
-              />
+              {({ isActive }) => {
+                return (
+                  <ChatsDisplay
+                    country={conversation.country}
+                    isActive={isActive}
+                    title={conversation.title}
+                    message={spliceMessage(
+                      conversation.messages.at(-1)?.content
+                    )}
+                  />
+                );
               }}
             </NavLink>
           ))}
