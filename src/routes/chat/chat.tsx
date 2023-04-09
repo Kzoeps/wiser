@@ -7,8 +7,8 @@ import MessageDisplay from "./components/message-display/message-display";
 import { INIT_MESSAGE, MessageConfig } from "./constants/chat.constants";
 import TypingDot from "./components/typing-dot/typing-dot";
 import Message from "../../components/message/message";
-import Send from '../../assets/send.mp3';
-import Receive from '../../assets/rec.mp3';
+import Send from "../../assets/send.mp3";
+import Receive from "../../assets/rec.mp3";
 
 export default function Chat() {
   const messageArea = useRef<HTMLDivElement | null>(null);
@@ -104,7 +104,7 @@ export default function Chat() {
         mb={3}
       >
         <Box display={"flex"} alignItems={"flex-end"} gap={"10px"}>
-          <Avatar name="wiser"  size={'xs'} mb={2}/>
+          <Avatar name="wiser" size={"xs"} mb={2} />
           <Flex direction="column">
             <MessageDisplay messages={messages} />
             {isTyping && (
@@ -129,8 +129,13 @@ export default function Chat() {
         w={"100%"}
         handleMessage={async (msg: string) => await handleMessage(msg)}
       />
-      <audio ref={sendRef} src={Send} style={{display: 'none'}} controls/>
-      <audio ref={receiveRef} src={Receive} style={{display: 'none'}} controls/>
+      <audio ref={sendRef} src={Send} style={{ display: "none" }} controls />
+      <audio
+        ref={receiveRef}
+        src={Receive}
+        style={{ display: "none" }}
+        controls
+      />
     </Box>
   );
 }

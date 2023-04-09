@@ -16,7 +16,7 @@ export default function TextInput({ handleMessage: onSubmit, ...rest }: TextInpu
   // think of a way to do this better
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Enter" && e.ctrlKey) {
+      if (e.key === "Enter" && e.shiftKey === false) {
         handleSubmit();
       }
     };
@@ -29,6 +29,7 @@ export default function TextInput({ handleMessage: onSubmit, ...rest }: TextInpu
     <Box {...rest} alignItems={'end'} display={"flex"} justifyContent={"space-between"}>
       <WiserTextArea setMessage={setMessage} message={message} />
       <IconButton
+      type="submit"
         ml={2}
         colorScheme="blue"
         onClick={handleSubmit}
