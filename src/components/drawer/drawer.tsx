@@ -15,10 +15,11 @@ import { IConversation } from "../../types/wiser.types";
 
 export interface WiserDrawerProps {
   conversations: IConversation[];
+  onCompose?: () => void
   onSearch: (search: string) => void;
 }
 
-export default function WiserDrawer({ conversations, onSearch }: WiserDrawerProps) {
+export default function WiserDrawer({ conversations, onSearch, onCompose }: WiserDrawerProps) {
 
   return (
     <>
@@ -36,6 +37,7 @@ export default function WiserDrawer({ conversations, onSearch }: WiserDrawerProp
           </Box>
           <Box maxW={"150px"}>
             <IconButton
+              onClick={onCompose || (() => {})}
               m={2}
               variant={"outline"}
               size={"sm"}
