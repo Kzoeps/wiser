@@ -35,7 +35,7 @@ export default function Chats() {
   }, [convos]);
 
   const handleSearch = (query: string) => {
-    console.log(query)
+    console.log(query);
     setConversations(
       search(query, allConvos, {
         keySelector: (obj: IConversation) => obj?.title,
@@ -59,25 +59,25 @@ export default function Chats() {
   };
   return (
     <>
-      <Box display={"flex"} gap={"10px"}>
+      <Box display={"flex"} w={"100%"} gap={"10px"}>
         <WiserDrawer
           onSearch={handleSearch}
           onCompose={onOpen}
           conversations={conversations || []}
         />
         <Outlet />
-        <GenericDialog
-          isOpen={isOpen}
-          title="Compose"
-          onConfirm={handleConfirm}
-          onClose={onClose}
-        >
-          <FormControl>
-            <FormLabel>Title</FormLabel>
-            <Input ref={titleRef} placeholder="Topic of conversation" />
-          </FormControl>
-        </GenericDialog>
       </Box>
+      <GenericDialog
+        isOpen={isOpen}
+        title="Compose"
+        onConfirm={handleConfirm}
+        onClose={onClose}
+      >
+        <FormControl>
+          <FormLabel>Title</FormLabel>
+          <Input ref={titleRef} placeholder="Topic of conversation" />
+        </FormControl>
+      </GenericDialog>
     </>
   );
 }

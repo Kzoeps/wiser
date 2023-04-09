@@ -117,9 +117,9 @@ export default function Chat() {
         height={"100vh"}
         mb={3}
       >
-        <Box display={"flex"} alignItems={"flex-end"} gap={"10px"}>
+        <Box display={"flex"} w="100%" alignItems={"flex-end"} gap={"10px"}>
           <Avatar name="wiser" size={"xs"} mb={2} />
-          <Flex direction="column">
+          <Flex direction="column" w={"100%"}>
             <MessageDisplay messages={messages} />
             {isTyping && (
               <Message
