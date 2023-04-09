@@ -33,7 +33,7 @@ export default function GenericDialog(props: GenericDialogProps) {
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onConfirm}>
+            <Button type="submit" colorScheme="blue" mr={3} onClick={onConfirm}>
               {okText}
             </Button>
             <Button onClick={onClose} variant="outline">{cancelText}</Button>

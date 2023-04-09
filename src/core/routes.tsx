@@ -1,8 +1,8 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, redirect, RouterProvider } from 'react-router-dom'
 import Home from '../routes/root'
 import Chat from '../routes/chat/chat'
 import Chats from '../routes/chats'
-import { getConversations } from '../api/loaders/loaders'
+import { addConversation, getConversations } from '../api/loaders/loaders'
 
 const router = createBrowserRouter([
     {
@@ -19,6 +19,14 @@ const router = createBrowserRouter([
                 element: <Chat/>
             }
         ]
+    },
+    {
+        path: '/chat/new',
+        action: async (request: any) => {
+            const data = request.formData()
+            const newChat = await addConversation(data.get('title') as string)
+            return redirect(`/chats/${newChat}`)
+        }
     }
 ])
 

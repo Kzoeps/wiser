@@ -9,3 +9,9 @@ export async function getConversations() {
     const conversations = await getAll()
     return  { conversations };
 }
+
+export async function addConversation(title: string) {
+    const { add } = useIndexedDB('conversations')
+    const conversation = await add({ title, message: [] })
+    return  { conversation };
+}
