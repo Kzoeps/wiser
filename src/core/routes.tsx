@@ -6,10 +6,6 @@ import { addConversation, getChatById, getConversations } from '../api/loaders/l
 
 const router = createBrowserRouter([
     {
-        path: '/',
-        element: <Navigate to='/chats' replace/> 
-    },
-    {
         path: '/chats',
         element: <Chats/>, 
         loader: getConversations,
@@ -28,6 +24,10 @@ const router = createBrowserRouter([
             const newChat = await addConversation(data.get('title') as string)
             return redirect(`/chats/${newChat}`)
         }
+    },
+    {
+        path: '/',
+        element: <Navigate to='/chats' replace/> 
     }
 ])
 
