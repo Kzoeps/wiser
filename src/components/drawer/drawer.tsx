@@ -12,6 +12,7 @@ import ChatsDisplay from "../chats-display/chats-display";
 import { IConversation } from "../../types/wiser.types";
 import { NavLink } from "react-router-dom";
 import styles from "./drawer.module.css";
+import { COUNTRIES } from "../../routes/chat/constants/chat.constants";
 
 export interface WiserDrawerProps {
   conversations: IConversation[];
@@ -86,7 +87,7 @@ export default function WiserDrawer({
                   <ChatsDisplay
                     country={conversation.country}
                     isActive={isActive}
-                    title={conversation.title}
+                    title={COUNTRIES[conversation.country].character}
                     message={spliceMessage(
                       conversation.messages.at(-1)?.content
                     )}

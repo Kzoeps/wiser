@@ -37,10 +37,9 @@ export default function Chats() {
   }, [convos]);
 
   const handleSearch = (query: string) => {
-    console.log(query);
     setConversations(
       search(query, allConvos, {
-        keySelector: (obj: IConversation) => obj?.title,
+        keySelector: (obj: IConversation) => COUNTRIES[obj?.country]?.character,
       })
     );
     if (query === "") {

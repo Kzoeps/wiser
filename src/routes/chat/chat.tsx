@@ -20,11 +20,16 @@ const filterMessages = (messages: IMessage[]) => {
     role,
   }));
 };
-const talkToGPT = async (messages: IMessage[], country: keyof typeof COUNTRIES, signal?: AbortSignal) => {
+const talkToGPT = async (
+  messages: IMessage[],
+  country: keyof typeof COUNTRIES,
+  title: string,
+  signal?: AbortSignal
+) => {
   const response = await fetch(`/api/talk`, {
     method: "POST",
     body: JSON.stringify(
-      filterMessages([getSystemPrompt(country) as IMessage, ...messages])
+      filterMessages([getSystemPrompt(country, title) as IMessage, ...messages])
     ),
     signal,
   });
@@ -37,11 +42,11 @@ export default function Chat() {
   const [isTyping, setIsTyping] = React.useState<boolean>(false);
   const [messages, setMessages] = React.useState<IMessage[]>([]);
   const { update } = useIndexedDB("conversations");
-  const { conversation } = useLoaderData() as { conversation: IConversation } ;
+  const { conversation } = useLoaderData() as { conversation: IConversation };
 
   const setUpMessages = useCallback((data: any, messages: IMessage[]) => {
     const systemMessage = data?.choices?.[0]?.message;
-    let newMessages= [...messages]
+    let newMessages = [...messages];
     if (systemMessage) {
       newMessages = [...newMessages, { ...systemMessage, id: uuidv4() }];
       setMessages(newMessages);
@@ -63,9 +68,13 @@ export default function Chat() {
       setMessages(newMessages);
       sendRef?.current?.play();
       setTimeout(() => setIsTyping(true), 500);
-      const data = await talkToGPT(newMessages, conversation.country);
+      const data = await talkToGPT(
+        newMessages,
+        conversation.country,
+        conversation.title === "init :)" ? "" : conversation.title
+      );
       newMessages = setUpMessages(data, newMessages);
-      await update({...conversation, messages: newMessages})
+      await update({ ...conversation, messages: newMessages });
     } catch (e) {
       console.error(e);
     } finally {
@@ -75,29 +84,7 @@ export default function Chat() {
 
   useEffect(() => {
     setMessages(conversation?.messages || []);
-  }, [conversation.id, conversation.messages])
-  // useEffect(() => {
-  //   setMessages(conversation?.messages || []);
-  //   const controller = new AbortController();
-  //   const setUpChatGPT = async () => {
-  //     try {
-  //       setIsTyping(true);
-  //       const data = await talkToGPT(
-  //         conversation?.messages || [],
-  //         controller.signal
-  //       );
-  //       setUpMessages(data, messages);
-  //     } catch (e) {
-  //     } finally {
-  //       setIsTyping(false);
-  //     }
-  //   };
-  //   setUpChatGPT();
-  //   return () => {
-  //     setIsTyping(false);
-  //     controller.abort();
-  //   };
-  // }, [conversation.id, setUpMessages]);
+  }, [conversation.id, conversation.messages]);
 
   useEffect(() => {
     scrollToBottom();
@@ -120,7 +107,11 @@ export default function Chat() {
         mb={3}
       >
         <Box display={"flex"} w="100%" alignItems={"flex-end"} gap={"10px"}>
-          <Avatar name={COUNTRIES[conversation.country].character} size={"xs"} mb={2} />
+          <Avatar
+            name={COUNTRIES[conversation.country].character}
+            size={"xs"}
+            mb={2}
+          />
           <Flex direction="column" w={"100%"}>
             <MessageDisplay messages={messages} />
             {isTyping && (
